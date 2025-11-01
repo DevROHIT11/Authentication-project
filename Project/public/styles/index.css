@@ -1,0 +1,24 @@
+*{
+    background-color: #0B192C;
+    color: white;
+}
+div{
+    width: 100%;
+    margin: 4rem auto 0rem auto;
+    text-align: center;
+}
+
+
+@media (max-width: 768px) {
+  div{
+    font-size: 18px;
+    text-align: center;
+  }
+  }
+
+@media (max-width: 480px) {
+  div{
+    font-size: 12px;
+    text-align: center;
+  }
+  }

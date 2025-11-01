@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign-Up</title>
+    <link rel="stylesheet" href="styles/signup.css">
+    <link rel="stylesheet" href="styles/index.css">
+</head>
+
+<body>
+    <div class="form-cont">
+        <div class="heading">
+           <h1>May I know You , Please !!</h1> 
+        </div>
+        <form  id="signup" action="/signup" class="signup">
+            <input name="name" type="text" placeholder="Enter  name" required>
+            <input name="email" type="text" placeholder="Enter  email" required>
+            <input name="password" type="password" placeholder="Enter password" required>
+            <input name="age" type="text" placeholder="Enter age" required>
+            <button id="signup-btn">Create Account</button>
+            <span><a id="signin-btn">already have account ?</a></span>
+        </form>
+    </div>
+</body>
+
+
+    <script>
+
+        const form = document.getElementById('signup');
+        const signup_btn = document.getElementById('signup-btn');
+        const signin_btn = document.getElementById('signin-btn')
+
+        signin_btn.addEventListener("click" , loadsigin) ;
+
+        function loadsigin(){
+            window.location.href = 'http://localhost:3000/signin' ;
+        }
+
+        async function signup(event) {
+
+            event.preventDefault();
+
+            const formdata = new FormData(form);
+            // js object
+            const user = {
+                name: formdata.get('name'),
+                email: formdata.get('email'),
+                password: formdata.get('password'),
+                age: formdata.get('age')
+            }
+
+            const response = await fetch('http://localhost:3000/signup', {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body : JSON.stringify(user) 
+            });
+
+            // console.log(typeof request.body) ;
+
+            // response  from backend 
+            const data = await response.json();
+            alert(data.message) ;
+
+            // relocating to homepage becoz fetch api is doesnt automatically navigate to new page
+            window.location.href = `http://localhost:3000${data.redirect}` ;
+        }
+
+        form.addEventListener('submit' , signup) ;
+
+    </script>
+
+</html>

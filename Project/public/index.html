@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <link rel="stylesheet" href="styles/index.css">
+</head>
+<body>
+    <div><h1 id="heading">
+
+    </h1></div>
+</body>
+
+<script>
+    
+    const heading = document.getElementById('heading')
+    const URL = new URLSearchParams(window.location.search) ;
+    const name = URL.get('user') ;
+
+    heading.innerText += ` Welcome ${name}` ;
+    console.log(name);
+</script>
+</html>
