@@ -9,9 +9,12 @@ const port = 3000;
 const app = express();
 const dotenv = require("dotenv");
 
-dotenv.config({path : path.resolve(__dirname , "../../.env")});
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
-app.use(cors());
+app.use(cors({
+  origin: "https://authentication-project-tflu.onrender.com", // your actual frontend
+  credentials: true, // allow cookies to be sent
+}));
 app.use(express.json());
 app.use(cookieParser());
 
@@ -21,12 +24,12 @@ app.get("/", (req, res) => {
 
 app.post("/signup", (req, res) => {
   const { name, email, password, age } = req.body;
-//   console.log(name, email, password, age);
+  //   console.log(name, email, password, age);
 
   // encrypting the password
   bcrypt.genSalt(10, function (err, salt) {
     bcrypt.hash(password, salt, async function (err, hash) {
-      console.log("Encrypted password : " , hash);
+      console.log("Encrypted password : ", hash);
 
       // storing user data into database
       const sql = await "INSERT INTO userdata VALUE (? ,?, ?, ? ) ";
@@ -39,11 +42,15 @@ app.post("/signup", (req, res) => {
 
           //jwt token -- sending cookies to frontend
           const token = jwt.sign({ email: email }, process.env.JWT_SECRET_KEY);
-          res.cookie("token", token);
+          res.cookie("token", token, {
+            httpOnly: true, // prevents JS access
+            secure: true, // required for HTTPS (Render uses HTTPS)
+            sameSite: "none", //for cross sites
+          });
           // sending response to frontend
           res.json({
             message: "Account Created Successfully ",
-            redirect : `/signin`,
+            redirect: `/signin`,
           });
         }
       });
@@ -52,7 +59,7 @@ app.post("/signup", (req, res) => {
 });
 
 // serving all the file to  browser when the url wants to acces the file inside this folder
-app.use(express.static(path.join(__dirname , "../public"))) ;
+app.use(express.static(path.join(__dirname, "../public")));
 
 // login
 app.post("/signin", (req, res) => {
@@ -79,16 +86,23 @@ app.post("/signin", (req, res) => {
           });
         } else {
           const token = jwt.sign({ email: email }, process.env.JWT_SECRET_KEY);
-          res.cookie("token", token);
-          res.json({ message: "Login succesfully", redirect: `/index.html?user=${result[0].name}` , name : `${result[0].name}`});
+          res.cookie("token", token, {
+            httpOnly: true, // prevents JS access
+            secure: true, // required for HTTPS (Render uses HTTPS)
+            sameSite: "none",
+          });
+          res.json({
+            message: "Login succesfully",
+            redirect: `/index.html?user=${result[0].name}`,
+            name: `${result[0].name}`,
+          });
         }
       });
     }
   });
 });
 
-
-// routings 
+// routings
 app.get("/signin", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/signin.html"));
 });

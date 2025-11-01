@@ -43,7 +43,8 @@
         const response = await fetch('https://authentication-project-tflu.onrender.com/signin', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(login)
+            body: JSON.stringify(login),
+            credentials : "include" ,
         });
 
         // console.log(typeof request.body) ;
