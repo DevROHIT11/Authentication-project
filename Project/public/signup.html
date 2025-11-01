@@ -35,7 +35,7 @@
         signin_btn.addEventListener("click" , loadsigin) ;
 
         function loadsigin(){
-            window.location.href = 'http://localhost:3000/signin' ;
+            window.location.href = 'https://authentication-project-tflu.onrender.com/signin' ;
         }
 
         async function signup(event) {
@@ -51,7 +51,7 @@
                 age: formdata.get('age')
             }
 
-            const response = await fetch('http://localhost:3000/signup', {
+            const response = await fetch('https://authentication-project-tflu.onrender.com/signup', {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body : JSON.stringify(user) 
@@ -64,7 +64,7 @@
             alert(data.message) ;
 
             // relocating to homepage becoz fetch api is doesnt automatically navigate to new page
-            window.location.href = `http://localhost:3000${data.redirect}` ;
+            window.location.href = `https://authentication-project-tflu.onrender.com${data.redirect}` ;
         }
 
         form.addEventListener('submit' , signup) ;
