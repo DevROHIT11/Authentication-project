@@ -7,7 +7,7 @@ The frontend uses simple HTML, CSS, and JavaScript for interaction.
 ---
 ## 1. Access in Browser
 
-Go to 👉 http://localhost:3000
+Go to 👉 https://authentication-project-tflu.onrender.com
 
 ---
 ## 2.  Features
